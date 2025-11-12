@@ -1,25 +1,48 @@
 import React from 'react';
 
-function Tile()
-{
-    return (
-        <div className="tile">
+interface TileProps {
+    x: number,
+    y: number
+}
 
+function Tile({x, y} : TileProps) {
+    return (
+        <div className="tile"
+             position-x={x}
+             position-y={y}
+             onClick={(click) => {
+                 // Left click
+                 console.log("left click")
+             }}
+             onContextMenu={(click) => {
+                 // Right click
+                 console.log("right click")
+             }}
+        >
+            {/* There goes bomb or flag */}
         </div>
     )
 }
 
-export default function Minesweeper()
-{
-    // Board size = x * x (always square)
-    let boardSize = 6;
+export default function Minesweeper() {
+    let boardSize = {
+        x: 8,
+        y: 8
+    }
 
     let tiles = [];
+    let keyEl = 0;
+    let keyRow = 0;
 
-    let key = 0;
-    for (let x = 0; x < boardSize; x++)
-        for (let y = 0; y < boardSize; y++)
-            tiles.push(<Tile key={key++}/>);
+    for (let y = 0; y < boardSize.y; y++)
+    {
+        let row = [];
+        for (let x = 0; x < boardSize.x; x++)
+        {
+            row[x] = <Tile key={keyEl++} x={x} y={y}/>;
+        }
+        tiles[y] = <article key={keyRow++} className="board-row">{row}</article>
+    }
 
     return (
         <section className="board">

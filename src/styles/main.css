@@ -5,6 +5,7 @@
   padding: 0;
   margin: 0;
   font-size: 16px;
+  user-select: none;
 }
 
 html, body {
@@ -17,22 +18,28 @@ html, body {
 }
 
 .board {
-  display: grid;
+  display: flex;
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1em;
+  flex-direction: column;
 }
-.board .tile {
+.board .board-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.board .board-row .tile {
   display: flex;
   aspect-ratio: 1/1;
-  width: 1em;
-  border-radius: 0.5em;
+  width: 5em;
+  border-radius: 0.25em;
   border: 1px solid var(--tile-border-color);
   background-color: var(--tile-color);
   transition: 0.2s ease-in-out background-color;
+  cursor: pointer;
 }
-.board .tile:hover {
+.board .board-row .tile:hover {
   background-color: var(--tile-hover-color);
 }
 
