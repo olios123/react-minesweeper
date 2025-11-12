@@ -17,6 +17,13 @@ html, body {
   background-color: var(--background-color);
 }
 
+i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+}
+
 .board {
   display: flex;
   justify-content: center;
@@ -38,6 +45,9 @@ html, body {
   background-color: var(--tile-color);
   transition: 0.2s ease-in-out background-color;
   cursor: pointer;
+}
+.board .board-row .tile i {
+  font-size: 2em;
 }
 .board .board-row .tile:hover {
   background-color: var(--tile-hover-color);

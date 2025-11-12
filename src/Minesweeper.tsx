@@ -1,28 +1,8 @@
 import React from 'react';
 
-interface TileProps {
-    x: number,
-    y: number
-}
 
-function Tile({x, y} : TileProps) {
-    return (
-        <div className="tile"
-             position-x={x}
-             position-y={y}
-             onClick={(click) => {
-                 // Left click
-                 console.log("left click")
-             }}
-             onContextMenu={(click) => {
-                 // Right click
-                 console.log("right click")
-             }}
-        >
-            {/* There goes bomb or flag */}
-        </div>
-    )
-}
+
+
 
 export default function Minesweeper() {
     let boardSize = {
