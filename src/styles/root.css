@@ -1,0 +1,11 @@
+:root {
+	/* Main elements */
+	--background-color: #8ABEB9;
+
+	/* Tiles/board styles */
+	--tile-color: #DDDAD0;
+	--tile-hover-color: #7A7A73;
+	--tile-show-color: #57564F;
+	--tile-border-color: #000;
+	--tile-mine-color: #E55050;
+}
