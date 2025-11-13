@@ -7,8 +7,10 @@
 	/* Main elements */
 	--background: linear-gradient(135deg,#0F172B 0%, #1C283C 50%, #0F172B 100%);
 	--section-color: #1D293D;
-	--button-color: #155DFC;
-	--button-hover-color: #1447E6;
+	--button-new-game-color: #155DFC;
+	--button-new-game-hover-color: #1447E6;
+	--input-background: #314158;
+	--input-background-hover: #445470;
 
 	/* Tiles/board styles */
 	--board-background: #27374D;
@@ -29,4 +31,14 @@
 
 h1, h2 {
 	font-size: calc(var(--font-size) * 1.5);
+}
+
+.flag {
+	color: var(--blue);
+}
+.bomb {
+	color: var(--red);
+}
+.time {
+	color: var(--green);
 }

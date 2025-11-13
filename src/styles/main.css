@@ -52,28 +52,70 @@ button {
   align-items: center;
   padding: 0.75em 1em;
   border-radius: var(--border-radius);
-  background-color: var(--button-color);
   transition: 0.2s ease-in-out background-color;
-  width: 80%;
   cursor: pointer;
-}
-button:hover {
-  background-color: var(--button-hover-color);
 }
 button i {
   margin-right: 0.5em;
 }
 
-.flag {
-  color: var(--blue);
+.dropdown {
+  display: flex;
+  width: 100%;
+  position: relative;
 }
-
-.bomb {
-  color: var(--red);
+.dropdown .dropdown-header {
+  display: flex;
+  align-items: center;
+  background-color: var(--input-background);
+  width: 100%;
+  padding: 0.75em 1em;
+  border-radius: var(--border-radius);
+  transition: 0.2s ease-in-out background-color;
+  cursor: pointer;
 }
-
-.time {
-  color: var(--green);
+.dropdown .dropdown-header:hover {
+  background-color: var(--input-background-hover);
+}
+.dropdown .dropdown-header p {
+  margin: 0;
+}
+.dropdown .dropdown-header i {
+  position: absolute;
+  right: 1em;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.dropdown .dropdown-content {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: calc(100% + 0.5em);
+  box-shadow: var(--box-shadow);
+  background-color: var(--input-background);
+  border-radius: var(--border-radius);
+}
+.dropdown .dropdown-content ol {
+  list-style-type: none;
+}
+.dropdown .dropdown-content ol li {
+  display: flex;
+  padding: 0.75em 1em;
+  transition: 0.2s ease-in-out background-color;
+  background-color: var(--input-background);
+  cursor: pointer;
+}
+.dropdown .dropdown-content ol li:hover {
+  background-color: var(--input-background-hover);
+}
+.dropdown .dropdown-content ol li i {
+  margin-right: 1em;
+}
+.dropdown .dropdown-content ol li:first-child {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+.dropdown .dropdown-content ol li:last-child {
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
 
 #minesweeper {
@@ -101,8 +143,15 @@ button i {
   flex: 1;
   padding: 0.5em;
 }
-#minesweeper .game-options article p {
+#minesweeper .game-options article > p {
   margin-bottom: 0.5em;
+}
+#minesweeper .game-options article.new-game button {
+  width: 100%;
+  background-color: var(--button-new-game-color);
+}
+#minesweeper .game-options article.new-game button:hover {
+  background-color: var(--button-new-game-hover-color);
 }
 #minesweeper .game-info {
   display: flex;

@@ -28,21 +28,49 @@ export default function Minesweeper() {
                 <h1>Minesweeper</h1>
             </header>
             <section className="game-options">
-                <article>
+                <article className="board-size">
                     <p>Board size</p>
-                    <button>
-                        <i className="fi fi-rr-rotate-left"></i>
-                        New Game
-                    </button>
+                    <div className="dropdown" id="board-size">
+                        <div className="dropdown-header">
+                            <p className="dropdown-selected">Small (8 x 8)</p>
+                            <i className="fi fi-rr-angle-small-down"></i>
+                        </div>
+                        <div className="dropdown-content">
+                            <ol>
+                                <li value="0">
+                                    <i className="fi fi-rr-check"></i>
+                                    Small (8 x 8)
+                                </li>
+                                <li value="1">Medium (12 x 12)</li>
+                                <li value="2">Large (16 x 16)</li>
+                                <li value="3">HUGE (24 x 24)</li>
+                            </ol>
+                        </div>
+                    </div>
                 </article>
-                <article>
+                <article className="game-difficulty">
                     <p>Difficulty</p>
-                    <button>
-                        <i className="fi fi-rr-rotate-left"></i>
-                        New Game
-                    </button>
+                    <div className="game-difficulty-buttons">
+                        <div className="dropdown" id="game-difficulty">
+                            <div className="dropdown-header">
+                                <p className="dropdown-selected">Medium (15% mines)</p>
+                                <i className="fi fi-rr-angle-small-down"></i>
+                            </div>
+                            <div className="dropdown-content">
+                                <ol>
+                                    <li value="0">Easy (10% mines)</li>
+                                    <li value="1">
+                                        <i className="fi fi-rr-check"></i>
+                                        Medium (15% mines)
+                                    </li>
+                                    <li value="2">Hard (20% mines)</li>
+                                    <li value="3">VERY HARD (30% mines)</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
                 </article>
-                <article>
+                <article className="new-game">
                     <button>
                         <i className="fi fi-rr-rotate-left"></i>
                         New Game
