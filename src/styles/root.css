@@ -1,11 +1,32 @@
 :root {
+	/* Static */
+	--font-size: 14px;
+	--border-radius: 10px;
+	--box-shadow: 8px 8px 12px -6px #0F172B;
+
 	/* Main elements */
-	--background-color: #8ABEB9;
+	--background: linear-gradient(135deg,#0F172B 0%, #1C283C 50%, #0F172B 100%);
+	--section-color: #1D293D;
+	--button-color: #155DFC;
+	--button-hover-color: #1447E6;
 
 	/* Tiles/board styles */
-	--tile-color: #DDDAD0;
-	--tile-hover-color: #7A7A73;
-	--tile-show-color: #57564F;
+	--board-background: #27374D;
+	--tile-color: #526782;
+	--tile-hover-color: #9DB2BF;
+	--tile-show-color: #DDE6ED;
 	--tile-border-color: #000;
 	--tile-mine-color: #E55050;
+
+	/* Text */
+	--color: #E2E8F0;
+
+	/* Colors */
+	--red: #FF5656;
+	--blue: #8CA9FF;
+	--green: #41A67E;
+}
+
+h1, h2 {
+	font-size: calc(var(--font-size) * 1.5);
 }

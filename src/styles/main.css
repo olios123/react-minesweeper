@@ -1,11 +1,18 @@
-@import url("https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-straight/css/uicons-solid-straight.css");
+@import url("https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css");
 @import "root.css";
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-size: 16px;
+  border: 0;
+  outline: 0;
+  font-size: var(--font-size);
+  color: var(--color);
   user-select: none;
+  font-family: Inter, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 html, body {
@@ -14,42 +21,136 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--background-color);
+  background: var(--background);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  padding: 20vw;
 }
 
 i {
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1/1;
 }
 
-.board {
+section {
+  padding: 1rem;
+  background-color: var(--section-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+}
+
+button {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding: 0.75em 1em;
+  border-radius: var(--border-radius);
+  background-color: var(--button-color);
+  transition: 0.2s ease-in-out background-color;
+  width: 80%;
+  cursor: pointer;
+}
+button:hover {
+  background-color: var(--button-hover-color);
+}
+button i {
+  margin-right: 0.5em;
+}
+
+.flag {
+  color: var(--blue);
+}
+
+.bomb {
+  color: var(--red);
+}
+
+.time {
+  color: var(--green);
+}
+
+#minesweeper {
+  display: flex;
   flex-direction: column;
 }
-.board .board-row {
+#minesweeper header {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-.board .board-row .tile {
+#minesweeper header i {
+  font-size: calc(var(--font-size) * 2);
+  margin-right: 0.25em;
+}
+#minesweeper .game-options {
   display: flex;
+  flex-direction: row;
+}
+#minesweeper .game-options article {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  padding: 0.5em;
+}
+#minesweeper .game-options article p {
+  margin-bottom: 0.5em;
+}
+#minesweeper .game-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#minesweeper .game-info article {
+  display: flex;
+  margin: 0 1em;
+}
+#minesweeper .game-info article > * {
+  font-size: calc(var(--font-size) * 1.25);
+}
+#minesweeper .game-info article i {
+  margin-right: 0.5em;
+}
+#minesweeper .board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1px;
+  width: min-content;
+  padding: 1em;
+  background-color: var(--board-background);
+}
+#minesweeper .board .board-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1px;
+}
+#minesweeper .board .board-row .tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   aspect-ratio: 1/1;
-  width: 5em;
-  border-radius: 0.25em;
-  border: 1px solid var(--tile-border-color);
+  width: calc(var(--font-size) * 3);
   background-color: var(--tile-color);
   transition: 0.2s ease-in-out background-color;
   cursor: pointer;
 }
-.board .board-row .tile i {
-  font-size: 2em;
+#minesweeper .board .board-row .tile i {
+  display: flex;
+  font-size: calc(var(--font-size) * 1.5);
 }
-.board .board-row .tile:hover {
+#minesweeper .board .board-row .tile:hover {
   background-color: var(--tile-hover-color);
 }
 

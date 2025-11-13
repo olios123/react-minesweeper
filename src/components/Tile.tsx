@@ -2,7 +2,7 @@
     Global variables
  */
 let flagged: any = [];
-
+const flag = "<i class=\"fi fi-rr-flag-alt\"></i>";
 
 interface TileProps {
     x: number,
@@ -68,7 +68,7 @@ function rightClick({ target, position, index } : TileClick) {
     }
 
     // Add flag to tile
-    target.innerHTML = "<i class=\"fi fi-ss-pennant\"></i>";
+    target.innerHTML = flag;
     flagged[flagged.length] = position;
 }
 

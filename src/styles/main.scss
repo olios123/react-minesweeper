@@ -1,12 +1,19 @@
-@import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-solid-straight/css/uicons-solid-straight.css');
+@import url('https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
 @import "root.css";
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-size: 16px;
+  border: 0;
+  outline: 0;
+  font-size: var(--font-size);
+  color: var(--color);
   user-select: none;
+  font-family: Inter, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 html, body {
@@ -15,45 +22,150 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--background-color);
+  background: var(--background);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  padding: 20vw;
 }
 
 i {
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1 / 1;
 }
 
-.board {
+section {
+  padding: 1rem;
+  background-color: var(--section-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+}
+
+button {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding: 0.75em 1em;
+  border-radius: var(--border-radius);
+  background-color: var(--button-color);
+  transition: 0.2s ease-in-out background-color;
+  width: 80%;
+  cursor: pointer;
+
+  &:hover {
+	background-color: var(--button-hover-color);
+  }
+
+  i {
+	margin-right: 0.5em;
+  }
+}
+
+.flag {
+  color: var(--blue);
+}
+.bomb {
+  color: var(--red);
+}
+.time {
+  color: var(--green);
+}
+
+#minesweeper {
+  display: flex;
   flex-direction: column;
 
-  .board-row {
+  header {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
 
-	.tile {
-	  display: flex;
-	  aspect-ratio: 1 / 1;
-	  width: 5em;
-	  border-radius: 0.25em;
-	  border: 1px solid var(--tile-border-color);
-	  background-color: var(--tile-color);
-	  transition: 0.2s ease-in-out background-color;
-	  cursor: pointer;
+	i {
+	  font-size: calc(var(--font-size) * 2);
+	  margin-right: 0.25em;
+	}
+  }
 
-	  i {
-		font-size: 2em;
+  .game-options {
+	display: flex;
+	flex-direction: row;
+
+	article {
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: flex-end;
+	  flex: 1;
+	  padding: 0.5em;
+
+	  p {
+		margin-bottom: 0.5em;
+	  }
+	}
+  }
+
+  .game-info {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	article {
+	  display: flex;
+	  margin: 0 1em;
+
+	  & > * {
+		font-size: calc(var(--font-size) * 1.25);
 	  }
 
-	  &:hover {
-		background-color: var(--tile-hover-color);
+	  i {
+		margin-right: 0.5em;
+	  }
+	}
+  }
+
+  .board {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 1px;
+	width: min-content;
+	padding: 1em;
+	background-color: var(--board-background);
+
+	.board-row {
+	  display: flex;
+	  flex-direction: row;
+	  justify-content: center;
+	  align-items: center;
+	  gap: 1px;
+
+	  .tile {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		aspect-ratio: 1 / 1;
+		width: calc(var(--font-size) * 3);
+		background-color: var(--tile-color);
+		transition: 0.2s ease-in-out background-color;
+		cursor: pointer;
+
+		i {
+		  display: flex;
+		  font-size: calc(var(--font-size) * 1.5);
+		}
+
+		&:hover {
+		  background-color: var(--tile-hover-color);
+		}
 	  }
 	}
   }
 }
+
