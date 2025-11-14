@@ -1,6 +1,13 @@
 import React from 'react';
 import Tile from './components/Tile';
 
+import {
+    Dropdown,
+    DropdownHeader,
+    DropdownContent,
+    DropdownElement
+} from './components/Dropdown';
+
 export default function Minesweeper() {
     let boardSize = {
         x: 8,
@@ -30,10 +37,23 @@ export default function Minesweeper() {
             <section className="game-options">
                 <article className="board-size">
                     <p>Board size</p>
+
+                    <Dropdown id="board-size">
+                        <DropdownHeader>
+                            <p className="dropdown-selected">Small (8 x 8)</p>
+                        </DropdownHeader>
+                        <DropdownContent>
+                            <DropdownElement value="0">
+                                <i className="fi fi-rr-check"></i>
+                                Small (8 x 8)
+                            </DropdownElement>
+                        </DropdownContent>
+                    </Dropdown>
+
                     <div className="dropdown" id="board-size">
                         <div className="dropdown-header">
                             <p className="dropdown-selected">Small (8 x 8)</p>
-                            <i className="fi fi-rr-angle-small-down"></i>
+
                         </div>
                         <div className="dropdown-content">
                             <ol>
