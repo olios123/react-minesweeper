@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Tile from './components/Tile';
 
 import {
@@ -28,6 +28,11 @@ export default function Minesweeper() {
         tiles[y] = <article key={keyRow++} className="board-row">{row}</article>
     }
 
+    const [selected, setSelected] = useState({
+        value: "0",
+        label: "Small (8 x 8)"
+    })
+
     return (
         <>
             <header className="game-title">
@@ -38,35 +43,48 @@ export default function Minesweeper() {
                 <article className="board-size">
                     <p>Board size</p>
 
-                    <Dropdown id="board-size">
+                    <Dropdown
+                        id="board-size"
+                        value={selected.value}
+                        onChange={(value, label) => setSelected({ value, label })}
+                    >
                         <DropdownHeader>
-                            <p className="dropdown-selected">Small (8 x 8)</p>
+                            <p className="dropdown-selected">{selected.label}</p>
                         </DropdownHeader>
+
                         <DropdownContent>
                             <DropdownElement value="0">
                                 <i className="fi fi-rr-check"></i>
                                 Small (8 x 8)
                             </DropdownElement>
+
+                            <DropdownElement value="1">
+                                Medium (12 x 12)
+                            </DropdownElement>
+
+                            <DropdownElement value="2">
+                                Large (20 x 20)
+                            </DropdownElement>
                         </DropdownContent>
                     </Dropdown>
 
-                    <div className="dropdown" id="board-size">
-                        <div className="dropdown-header">
-                            <p className="dropdown-selected">Small (8 x 8)</p>
+                    {/*<div className="dropdown" id="board-size">*/}
+                    {/*    <div className="dropdown-header">*/}
+                    {/*        <p className="dropdown-selected">Small (8 x 8)</p>*/}
 
-                        </div>
-                        <div className="dropdown-content">
-                            <ol>
-                                <li value="0">
-                                    <i className="fi fi-rr-check"></i>
-                                    Small (8 x 8)
-                                </li>
-                                <li value="1">Medium (12 x 12)</li>
-                                <li value="2">Large (16 x 16)</li>
-                                <li value="3">HUGE (24 x 24)</li>
-                            </ol>
-                        </div>
-                    </div>
+                    {/*    </div>*/}
+                    {/*    <div className="dropdown-content">*/}
+                    {/*        <ol>*/}
+                    {/*            <li value="0">*/}
+                    {/*                <i className="fi fi-rr-check"></i>*/}
+                    {/*                Small (8 x 8)*/}
+                    {/*            </li>*/}
+                    {/*            <li value="1">Medium (12 x 12)</li>*/}
+                    {/*            <li value="2">Large (16 x 16)</li>*/}
+                    {/*            <li value="3">HUGE (24 x 24)</li>*/}
+                    {/*        </ol>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </article>
                 <article className="game-difficulty">
                     <p>Difficulty</p>
