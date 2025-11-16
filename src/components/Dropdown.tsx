@@ -4,7 +4,6 @@ import {
     ReactNode,
     ReactElement
 } from "react";
-import {RecordWithTtl} from "node:dns";
 
 /* --------------------------------------------------------
    DROPDOWN
@@ -80,12 +79,10 @@ export function DropdownContent({
                                     onSelect,
                                     selectedValue
                                 }: DropdownContentProps) {
-    if (!open) return null;
-
     const arrayChildren = Array.isArray(children) ? children : [children];
 
     return (
-        <div className="dropdown-content">
+        <div className={`dropdown-content ${open ? "open" : ""}`}>
             <ol>
                 {arrayChildren.map((child: ReactElement) =>
                     cloneElement(child as ReactElement<any>, {
