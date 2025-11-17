@@ -26,6 +26,23 @@ function generateBoard(boardSize: number) {
     return tiles;
 }
 
+function generateMines(boardSize: number, difficulty: number) {
+    const numberOfMines = Math.round((boardSize * boardSize) * (difficulty / 100));
+    let mines = Array.from({ length: boardSize }, () => new Array(boardSize).fill(0));
+
+    while (mines.length < numberOfMines) {
+        const x = Math.floor(Math.random() * boardSize);
+        const y = Math.floor(Math.random() * boardSize);
+
+        // Mine already on this tile
+        if (mines[x][y] != 0) continue;
+
+        mines[x][y] = 1;
+    }
+
+    return mines;
+}
+
 export default function Minesweeper() {
     // Changing board size
     const [selectedBoard, setSelectedBoard] = useState({
@@ -37,7 +54,7 @@ export default function Minesweeper() {
     // Changing game difficulty
     const [selectedDifficulty, setSelectedDifficulty] = useState({
         value: "1",
-        label: "Normal (15%)"
+        label: "Medium (15% mines)"
     })
     let difficulties = [10, 15, 20, 30];
 
@@ -59,8 +76,14 @@ export default function Minesweeper() {
         In game changing settings
     -------------------------------------------------------- */
 
+    let tilesData = [];
+
     useEffect(() => {
-        setBoard(generateBoard(boardSizes[parseInt(selectedBoard.value)]));
+        const boardSize = boardSizes[parseInt(selectedBoard.value)];
+        const boardMines = difficulties[parseInt(selectedDifficulty.value)];
+
+        setBoard(generateBoard(boardSize));
+        generateMines(boardSize, boardMines);
     }, [selectedBoard, selectedDifficulty]);
 
     return (
