@@ -28,16 +28,23 @@ function generateBoard(boardSize: number) {
 
 function generateMines(boardSize: number, difficulty: number) {
     const numberOfMines = Math.round((boardSize * boardSize) * (difficulty / 100));
-    let mines = Array.from({ length: boardSize }, () => new Array(boardSize).fill(0));
+    let mines = Array.from({ length: boardSize }, () => new Array(boardSize).fill(-1));
 
-    while (mines.length < numberOfMines) {
+    // -1  - hidden tile
+    //  0  - open tile (no bomb)
+    //  1  - bomb
+
+    let addedMines = 0;
+
+    while (addedMines < numberOfMines) {
         const x = Math.floor(Math.random() * boardSize);
         const y = Math.floor(Math.random() * boardSize);
 
         // Mine already on this tile
-        if (mines[x][y] != 0) continue;
+        if (mines[x][y] == 1) continue;
 
         mines[x][y] = 1;
+        addedMines++;
     }
 
     return mines;
@@ -72,18 +79,24 @@ export default function Minesweeper() {
         value: "00:00"
     });
 
+
+
     /* --------------------------------------------------------
         In game changing settings
     -------------------------------------------------------- */
-
-    let tilesData = [];
 
     useEffect(() => {
         const boardSize = boardSizes[parseInt(selectedBoard.value)];
         const boardMines = difficulties[parseInt(selectedDifficulty.value)];
 
         setBoard(generateBoard(boardSize));
-        generateMines(boardSize, boardMines);
+
+        // There are stored information about bombs, clicked tiles etc.
+        // -1  - hidden tile
+        //  0  - open tile
+        //  1  - bomb on tile
+        let gameBoard = generateMines(boardSize, boardMines);
+
     }, [selectedBoard, selectedDifficulty]);
 
     return (
