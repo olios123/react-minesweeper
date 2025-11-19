@@ -8,22 +8,14 @@ import {
     DropdownElement
 } from './components/Dropdown';
 
-function generateBoard(boardSize: number) {
-    let tiles = [];
-    let keyEl = 0;
-    let keyRow = 0;
+function revealTile(x: number, y: number) {
+    
+}
 
-    for (let y = 0; y < boardSize; y++)
-    {
-        let row = [];
-        for (let x = 0; x < boardSize; x++)
-        {
-            row[x] = <Tile key={keyEl++} x={x} y={y}/>;
-        }
-        tiles[y] = <article key={keyRow++} className="board-row">{row}</article>
-    }
 
-    return tiles;
+
+function updateBoard(board: any) {
+    
 }
 
 function generateMines(boardSize: number, difficulty: number) {
@@ -34,7 +26,7 @@ function generateMines(boardSize: number, difficulty: number) {
     //  0  - open tile (no bomb)
     //  1  - bomb
 
-    let addedMines = 0;
+    let addedMines = 0; // Number of mines on board
 
     while (addedMines < numberOfMines) {
         const x = Math.floor(Math.random() * boardSize);
@@ -51,22 +43,47 @@ function generateMines(boardSize: number, difficulty: number) {
 }
 
 export default function Minesweeper() {
-    // Changing board size
+    /*
+        Changing board size
+     */
     const [selectedBoard, setSelectedBoard] = useState({
         value: "0",
         label: "Small (8 x 8)"
     })
     const boardSizes = [8, 12, 16, 24];
+    const [boardSize, setBoardSize] = useState<number>(boardSizes[0]);
 
-    // Changing game difficulty
+
+    /*
+        Changing game difficulty
+     */
     const [selectedDifficulty, setSelectedDifficulty] = useState({
         value: "1",
         label: "Medium (15% mines)"
     })
-    let difficulties = [10, 15, 20, 30];
+    const difficulties = [10, 15, 20, 30];
+    const [difficulty, setDifficulty] = useState<number>(difficulties[1]);
 
-    // Board
-    const [board, setBoard] = useState<any>();
+
+
+    /*
+        Board
+     */
+    // Data about each tile on the board
+    const [boardData, setBoardData] = useState(() =>
+        Array.from({ length: boardSize }, (_, y) =>
+            Array.from({ length: boardSize }, (_, x) => ({
+                x,
+                y,
+                revealed: false,
+                flagged: false,
+                bomb: false
+            }))
+        )
+    );
+    const [board, setBoard] = useState<any>(generateBoard()); // Board JSX elements
+
+
 
     // Settings flags
     const [flags, setFlags] = useState<number>(0);
@@ -79,25 +96,61 @@ export default function Minesweeper() {
         value: "00:00"
     });
 
+    const [gameState, setGameState] = useState<"pending" | "playing" | "won" | "lost">("pending");
 
+    /* --------------------------------------------------------
+        In game functions
+    -------------------------------------------------------- */
+
+    function generateBoard() {
+        let tiles = [];
+        let keyEl = 0; // Keys for React elements
+        let keyRow = 0; // Keys for React elements
+
+        for (let y = 0; y < boardSize; y++)
+        {
+            let row = [];
+            for (let x = 0; x < boardSize; x++)
+            {
+                row[x] = <Tile
+                    key={keyEl++}
+                    x={x}
+                    y={y}
+                />;
+            }
+            tiles[y] = <article key={keyRow++} className="board-row">{row}</article>
+        }
+
+        return tiles;
+    }
+    
+    function flagTile() {
+
+    }
 
     /* --------------------------------------------------------
         In game changing settings
     -------------------------------------------------------- */
 
+    /*
+        // Update board size and difficulty when selected values change
+     */
     useEffect(() => {
-        const boardSize = boardSizes[parseInt(selectedBoard.value)];
-        const boardMines = difficulties[parseInt(selectedDifficulty.value)];
-
-        setBoard(generateBoard(boardSize));
-
-        // There are stored information about bombs, clicked tiles etc.
-        // -1  - hidden tile
-        //  0  - open tile
-        //  1  - bomb on tile
-        let gameBoard = generateMines(boardSize, boardMines);
-
+        setBoardSize(boardSizes[parseInt(selectedBoard.value)]);
+        setDifficulty(difficulties[parseInt(selectedDifficulty.value)]);
     }, [selectedBoard, selectedDifficulty]);
+
+    /*
+        Regenerate board when board size or difficulty changes
+     */
+    useEffect(() => {
+        if (!boardSize || !difficulty) return; // Wait until both values are set
+
+        console.log(boardSize)
+
+        // Generate new board data
+        setBoard(generateBoard());
+    }, [boardSize, difficulty]);
 
     return (
         <>
