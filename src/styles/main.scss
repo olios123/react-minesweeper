@@ -67,12 +67,22 @@ button {
   i {
 	margin-right: 0.5em;
   }
+
+  &.new-game {
+	width: 100%;
+	background-color: var(--button-new-game-color);
+
+	&:hover {
+	  background-color: var(--button-new-game-hover-color);
+	}
+  }
 }
 
 .dropdown {
   display: flex;
   width: 100%;
   position: relative;
+  z-index: 999;
 
   .dropdown-header {
 	display: flex;
@@ -177,17 +187,6 @@ button {
 	  & > p {
 		margin-bottom: 0.5em;
 	  }
-
-	  &.new-game {
-		button {
-		  width: 100%;
-		  background-color: var(--button-new-game-color);
-
-		  &:hover {
-			background-color: var(--button-new-game-hover-color);
-		  }
-		}
-	  }
 	}
   }
 
@@ -219,6 +218,7 @@ button {
 	width: min-content;
 	padding: 1em;
 	background-color: var(--board-background);
+	position: relative;
 
 	// 8 x 8
 	&.board-size-8 {}

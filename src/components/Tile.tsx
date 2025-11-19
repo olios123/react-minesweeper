@@ -4,10 +4,6 @@
 // let flagged: any = [];
 // const flag = "<i class=\"fi fi-rr-flag-alt\"></i>";
 //
-interface TileProps {
-    x: number,
-    y: number
-}
 //
 // interface ElementClick {
 //     target: any,
@@ -93,22 +89,32 @@ interface TileProps {
 //     )
 // }
 
-export default function Tile({x, y} : TileProps) {
+
+interface TileProps {
+    x: number,
+    y: number,
+    onTileClick: (
+        x: number,
+        y: number,
+        mouseClick: "left" | "right"
+    ) => void
+}
+
+export default function Tile({x , y, onTileClick} : TileProps) {
+    
+    function tileClick() {
+        
+    }
+    
     return (
         <div className="tile"
              position-x={x}
              position-y={y}
-             onClick={(click) => {
-                 // tileClicked({
-                 //     target: click.target,
-                 //     mouseClick: "left"
-                 // })
+             onClick={() => {
+                 onTileClick(x, y, "left");
              }}
-             onContextMenu={(click) => {
-                 // tileClicked({
-                 //     target: click.target,
-                 //     mouseClick: "right"
-                 // })
+             onContextMenu={() => {
+                 onTileClick(x, y, "right");
              }}
         >
             {/* There goes bomb or flag */}

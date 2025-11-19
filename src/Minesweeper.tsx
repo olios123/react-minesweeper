@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Tile from './components/Tile';
+import GameState from "./components/GameState";
 
 import {
     Dropdown,
@@ -7,16 +8,6 @@ import {
     DropdownContent,
     DropdownElement
 } from './components/Dropdown';
-
-function revealTile(x: number, y: number) {
-    
-}
-
-
-
-function updateBoard(board: any) {
-    
-}
 
 function generateMines(boardSize: number, difficulty: number) {
     const numberOfMines = Math.round((boardSize * boardSize) * (difficulty / 100));
@@ -53,7 +44,6 @@ export default function Minesweeper() {
     const boardSizes = [8, 12, 16, 24];
     const [boardSize, setBoardSize] = useState<number>(boardSizes[0]);
 
-
     /*
         Changing game difficulty
      */
@@ -63,8 +53,6 @@ export default function Minesweeper() {
     })
     const difficulties = [10, 15, 20, 30];
     const [difficulty, setDifficulty] = useState<number>(difficulties[1]);
-
-
 
     /*
         Board
@@ -96,11 +84,42 @@ export default function Minesweeper() {
         value: "00:00"
     });
 
-    const [gameState, setGameState] = useState<"pending" | "playing" | "won" | "lost">("pending");
+    /*
+        Game state
+     */
+    const [gameState, setGameState] = useState<string>("won");
+    const [displayGameState, setDisplayGameState] = useState<boolean>(false);
 
     /* --------------------------------------------------------
         In game functions
     -------------------------------------------------------- */
+
+    // Handle tile click -> reveal or flag tile
+    function handleTileClick(x: number, y: number, mouseClick: "left" | "right") {
+        const clickedTile = boardData[y][x];
+
+        switch (mouseClick)
+        {
+            case "left":
+                if (clickedTile.flagged || clickedTile.revealed) return; // Can't reveal flagged or already revealed tile
+                if (clickedTile.bomb) {
+                    // Game over
+                    setGameState("lost");
+                    console.log("Game Over!");
+                    return;
+                }
+
+
+                break;
+            case "right":
+                if (clickedTile.revealed) return; // Can't flag revealed tile
+
+                clickedTile.flagged = !clickedTile.flagged;
+                console.log(clickedTile)
+                break;
+
+        }
+    }
 
     function generateBoard() {
         let tiles = [];
@@ -116,16 +135,13 @@ export default function Minesweeper() {
                     key={keyEl++}
                     x={x}
                     y={y}
+                    onTileClick={handleTileClick}
                 />;
             }
             tiles[y] = <article key={keyRow++} className="board-row">{row}</article>
         }
 
         return tiles;
-    }
-    
-    function flagTile() {
-
     }
 
     /* --------------------------------------------------------
@@ -151,6 +167,27 @@ export default function Minesweeper() {
         // Generate new board data
         setBoard(generateBoard());
     }, [boardSize, difficulty]);
+
+    /*
+        Update board when game state changes
+     */
+    useEffect(() => {
+        if (!gameState) return; // Wait until game state is set
+
+        switch (gameState)
+        {
+            case "pending":
+                break;
+            case "playing":
+                break;
+            case "won":
+                setDisplayGameState(true);
+                break;
+            case "lost":
+                setDisplayGameState(true);
+                break;
+        }
+    }, [gameState]);
 
     return (
         <>
@@ -217,26 +254,31 @@ export default function Minesweeper() {
 
                     </div>
                 </article>
-                <article className="new-game">
-                    <button>
+                <article>
+                    <button className="new-game"> {/* TODO clicking this button should reset the game */}
                         <i className="fi fi-rr-rotate-left"></i>
                         New Game
                     </button>
                 </article>
             </section>
             <section className="game-info">
-                <article className="bombs">
-                    <i className="fi fi-rr-bomb bomb"></i>
-                    <p>{bombs}</p>
-                </article>
-                <article className="flags">
-                    <i className="fi fi-rr-flag-alt flag"></i>
-                    <p>{flags}</p>
-                </article>
-                <article className="time">
-                    <i className="fi fi-rr-clock-three time"></i>
-                    <p>{timer.value}</p>
-                </article>
+                <div className="game-info-sec">
+                    <article className="bombs">
+                        <i className="fi fi-rr-bomb bomb"></i>
+                        <p>{bombs}</p>
+                    </article>
+                    <article className="flags">
+                        <i className="fi fi-rr-flag-alt flag"></i>
+                        <p>{flags}</p>
+                    </article>
+                    <article className="time">
+                        <i className="fi fi-rr-clock-three time"></i>
+                        <p>{timer.value}</p>
+                    </article>
+                </div>
+                <div className="game-info-sec">
+                    <GameState gameState={gameState} />
+                </div>
             </section>
             <section className={`board board-size-${boardSizes[parseInt(selectedBoard.value)]}`}>
                 {board}

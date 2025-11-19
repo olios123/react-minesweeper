@@ -67,11 +67,19 @@ button {
 button i {
   margin-right: 0.5em;
 }
+button.new-game {
+  width: 100%;
+  background-color: var(--button-new-game-color);
+}
+button.new-game:hover {
+  background-color: var(--button-new-game-hover-color);
+}
 
 .dropdown {
   display: flex;
   width: 100%;
   position: relative;
+  z-index: 999;
 }
 .dropdown .dropdown-header {
   display: flex;
@@ -164,13 +172,6 @@ button i {
 #minesweeper .game-options article > p {
   margin-bottom: 0.5em;
 }
-#minesweeper .game-options article.new-game button {
-  width: 100%;
-  background-color: var(--button-new-game-color);
-}
-#minesweeper .game-options article.new-game button:hover {
-  background-color: var(--button-new-game-hover-color);
-}
 #minesweeper .game-info {
   display: flex;
   justify-content: center;
@@ -195,6 +196,7 @@ button i {
   width: min-content;
   padding: 1em;
   background-color: var(--board-background);
+  position: relative;
 }
 #minesweeper .board.board-size-16 .board-row .tile {
   width: calc(var(--font-size) * 2);
