@@ -174,17 +174,22 @@ button.new-game:hover {
 }
 #minesweeper .game-info {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 1em 2em;
 }
-#minesweeper .game-info article {
+#minesweeper .game-info .game-info-sec {
   display: flex;
-  margin: 0 1em;
+  flex-direction: row;
+  gap: 2em;
 }
-#minesweeper .game-info article > * {
+#minesweeper .game-info .game-info-sec article {
+  display: flex;
+}
+#minesweeper .game-info .game-info-sec article > * {
   font-size: calc(var(--font-size) * 1.25);
 }
-#minesweeper .game-info article i {
+#minesweeper .game-info .game-info-sec article i {
   margin-right: 0.5em;
 }
 #minesweeper .board {

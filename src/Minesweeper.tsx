@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import Tile from './components/Tile';
 import GameState from "./components/GameState";
 
 import {
@@ -8,141 +7,61 @@ import {
     DropdownContent,
     DropdownElement
 } from './components/Dropdown';
+import {Board} from "./components/classes/Board";
 
-function generateMines(boardSize: number, difficulty: number) {
-    const numberOfMines = Math.round((boardSize * boardSize) * (difficulty / 100));
-    let mines = Array.from({ length: boardSize }, () => new Array(boardSize).fill(-1));
 
-    // -1  - hidden tile
-    //  0  - open tile (no bomb)
-    //  1  - bomb
+// Game config
+const boardSizes = [8, 12, 16, 24];
+const difficulties = [10, 15, 20, 30];
 
-    let addedMines = 0; // Number of mines on board
-
-    while (addedMines < numberOfMines) {
-        const x = Math.floor(Math.random() * boardSize);
-        const y = Math.floor(Math.random() * boardSize);
-
-        // Mine already on this tile
-        if (mines[x][y] == 1) continue;
-
-        mines[x][y] = 1;
-        addedMines++;
-    }
-
-    return mines;
-}
 
 export default function Minesweeper() {
     /*
-        Changing board size
+        ----------------------------------------------------------
+                           Changing board size
+        ----------------------------------------------------------
      */
     const [selectedBoard, setSelectedBoard] = useState({
         value: "0",
         label: "Small (8 x 8)"
     })
-    const boardSizes = [8, 12, 16, 24];
     const [boardSize, setBoardSize] = useState<number>(boardSizes[0]);
 
     /*
-        Changing game difficulty
+        ----------------------------------------------------------
+                         Changing game difficulty
+        ----------------------------------------------------------
      */
     const [selectedDifficulty, setSelectedDifficulty] = useState({
         value: "1",
         label: "Medium (15% mines)"
     })
-    const difficulties = [10, 15, 20, 30];
     const [difficulty, setDifficulty] = useState<number>(difficulties[1]);
 
     /*
-        Board
+        ----------------------------------------------------------
+                                Board
+        ----------------------------------------------------------
      */
-    // Data about each tile on the board
-    const [boardData, setBoardData] = useState(() =>
-        Array.from({ length: boardSize }, (_, y) =>
-            Array.from({ length: boardSize }, (_, x) => ({
-                x,
-                y,
-                revealed: false,
-                flagged: false,
-                bomb: false
-            }))
-        )
-    );
-    const [board, setBoard] = useState<any>(generateBoard()); // Board JSX elements
-
-
-
-    // Settings flags
-    const [flags, setFlags] = useState<number>(0);
-
-    // Bombs counter
-    const [bombs, setBombs] = useState<number>(0);
-
-    // Timer
-    const [timer, setTimer] = useState({
-        value: "00:00"
-    });
+    // Main board class instance
+    const [board, setBoard] = useState<any>(new Board(boardSize, difficulty));
+    const [boardJSX, setBoardJSX] = useState<any>(board.generateJSXBoard());
 
     /*
-        Game state
+        ----------------------------------------------------------
+                            Data and stats
+        ----------------------------------------------------------
      */
-    const [gameState, setGameState] = useState<string>("won");
-    const [displayGameState, setDisplayGameState] = useState<boolean>(false);
-
-    /* --------------------------------------------------------
-        In game functions
-    -------------------------------------------------------- */
-
-    // Handle tile click -> reveal or flag tile
-    function handleTileClick(x: number, y: number, mouseClick: "left" | "right") {
-        const clickedTile = boardData[y][x];
-
-        switch (mouseClick)
-        {
-            case "left":
-                if (clickedTile.flagged || clickedTile.revealed) return; // Can't reveal flagged or already revealed tile
-                if (clickedTile.bomb) {
-                    // Game over
-                    setGameState("lost");
-                    console.log("Game Over!");
-                    return;
-                }
+    const [flags, setFlags] = useState<number>(0); // Settings flags
+    const [bombs, setBombs] = useState<number>(0); // Bombs counter
+    const [timer, setTimer] = useState<number>(0); // Timer
+    // Game state
+    // "pending" | "playing" | "won" | "lost"
+    const [gameState, setGameState] = useState<string>("pending");
 
 
-                break;
-            case "right":
-                if (clickedTile.revealed) return; // Can't flag revealed tile
-
-                clickedTile.flagged = !clickedTile.flagged;
-                console.log(clickedTile)
-                break;
-
-        }
-    }
-
-    function generateBoard() {
-        let tiles = [];
-        let keyEl = 0; // Keys for React elements
-        let keyRow = 0; // Keys for React elements
-
-        for (let y = 0; y < boardSize; y++)
-        {
-            let row = [];
-            for (let x = 0; x < boardSize; x++)
-            {
-                row[x] = <Tile
-                    key={keyEl++}
-                    x={x}
-                    y={y}
-                    onTileClick={handleTileClick}
-                />;
-            }
-            tiles[y] = <article key={keyRow++} className="board-row">{row}</article>
-        }
-
-        return tiles;
-    }
+    // New game trigger
+    const [newGame, setNewGame] = useState<boolean>(false);
 
     /* --------------------------------------------------------
         In game changing settings
@@ -162,32 +81,16 @@ export default function Minesweeper() {
     useEffect(() => {
         if (!boardSize || !difficulty) return; // Wait until both values are set
 
-        console.log(boardSize)
-
         // Generate new board data
-        setBoard(generateBoard());
-    }, [boardSize, difficulty]);
+        board.updateBoard(boardSize, difficulty);
+        setBoardJSX(board.generateJSXBoard());
 
-    /*
-        Update board when game state changes
-     */
-    useEffect(() => {
-        if (!gameState) return; // Wait until game state is set
+        // Reset all game data
+        setTimer(0);
+        setFlags(0);
+        setGameState("pending");
 
-        switch (gameState)
-        {
-            case "pending":
-                break;
-            case "playing":
-                break;
-            case "won":
-                setDisplayGameState(true);
-                break;
-            case "lost":
-                setDisplayGameState(true);
-                break;
-        }
-    }, [gameState]);
+    }, [boardSize, difficulty, newGame]);
 
     return (
         <>
@@ -255,7 +158,7 @@ export default function Minesweeper() {
                     </div>
                 </article>
                 <article>
-                    <button className="new-game"> {/* TODO clicking this button should reset the game */}
+                    <button className="new-game" onClick={() => setNewGame(!newGame)}>
                         <i className="fi fi-rr-rotate-left"></i>
                         New Game
                     </button>
@@ -273,7 +176,7 @@ export default function Minesweeper() {
                     </article>
                     <article className="time">
                         <i className="fi fi-rr-clock-three time"></i>
-                        <p>{timer.value}</p>
+                        <p>{timer}</p>
                     </article>
                 </div>
                 <div className="game-info-sec">
@@ -281,7 +184,7 @@ export default function Minesweeper() {
                 </div>
             </section>
             <section className={`board board-size-${boardSizes[parseInt(selectedBoard.value)]}`}>
-                {board}
+                {boardJSX}
             </section>
         </>
     );
