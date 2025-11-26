@@ -37,23 +37,21 @@ export class Board {
         this.generateMines();
     }
 
+
     generateJSXBoard(
         setGameState: (state: string) => void
     ) {
         let tiles = [];
-        let keyEl = 0; // Keys for React elements
         let keyRow = 0; // Keys for React elements
 
         for (let y = 0; y < this.size; y++) {
             let row = [];
             for (let x = 0; x < this.size; x++) {
                 row[x] = <Tile
-                    key={keyEl++}
-                    x={x}
-                    y={y}
+                    key={`${x}-${y}`}
+                    tileData={this.boardData[x][y]}
                     onClick={() => this.handleTileClick(x, y, "left", setGameState)}
                     onContextMenu={() => this.handleTileClick(x, y, "right", setGameState)}
-
                 />;
             }
             tiles[y] = <article key={keyRow++} className="board-row">{row}</article>;
@@ -76,7 +74,10 @@ export class Board {
                 if (clickedTile.bomb) { // Clicked on a mine
                     // Game over
                     setGameState("lost");
-                    console.log("Game Over!");
+
+                    // Reveal all mines and mark the clicked one
+                    this.revealMines();
+
                     return;
                 }
 
@@ -113,5 +114,16 @@ export class Board {
 
         // Update class mines count
         this.mines = addedMines;
+    }
+
+    private revealMines() {
+        for (const row of this.boardData) {
+            for (const tile of row) {
+                if (tile.bomb) {
+                    console.log(tile.x, tile.y)
+                    tile.revealed = true;
+                }
+            }
+        }
     }
 }

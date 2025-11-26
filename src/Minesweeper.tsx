@@ -40,15 +40,6 @@ export default function Minesweeper() {
 
     /*
         ----------------------------------------------------------
-                                Board
-        ----------------------------------------------------------
-     */
-    // Main board class instance
-    const [board, setBoard] = useState<any>(new Board(boardSize, difficulty));
-    const [boardJSX, setBoardJSX] = useState<any>(board.generateJSXBoard());
-
-    /*
-        ----------------------------------------------------------
                             Data and stats
         ----------------------------------------------------------
      */
@@ -59,6 +50,15 @@ export default function Minesweeper() {
     // "pending" | "playing" | "won" | "lost"
     const [gameState, setGameState] = useState<string>("pending");
 
+    /*
+        ----------------------------------------------------------
+                                Board
+        ----------------------------------------------------------
+     */
+    // Main board class instance
+    const [board, setBoard] = useState<any>(new Board(boardSize, difficulty));
+    const [boardJSX, setBoardJSX] = useState<any>(board.generateJSXBoard(setGameState));
+
 
     // New game trigger
     const [newGame, setNewGame] = useState<boolean>(false);
@@ -68,7 +68,7 @@ export default function Minesweeper() {
     -------------------------------------------------------- */
 
     /*
-        // Update board size and difficulty when selected values change
+        Update board size and difficulty when selected values change
      */
     useEffect(() => {
         setBoardSize(boardSizes[parseInt(selectedBoard.value)]);
@@ -83,7 +83,7 @@ export default function Minesweeper() {
 
         // Generate new board data
         board.updateBoard(boardSize, difficulty);
-        setBoardJSX(board.generateJSXBoard());
+        setBoardJSX(board.generateJSXBoard(setGameState));
 
         // Reset all game data
         setTimer(0);
@@ -91,6 +91,13 @@ export default function Minesweeper() {
         setGameState("pending");
 
     }, [boardSize, difficulty, newGame]);
+
+    /*
+        Update board when game state changes
+     */
+    useEffect(() => {
+        setBoardJSX(board.generateJSXBoard(setGameState));
+    }, [gameState]);
 
     return (
         <>
