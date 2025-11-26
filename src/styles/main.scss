@@ -261,6 +261,16 @@ button {
 		transition: 0.2s ease-in-out background-color;
 		cursor: pointer;
 
+		// Revealed tile
+		&.revealed {
+		  background-color: var(--tile-revealed-color);
+		  cursor: default;
+		}
+		// Bomb tile (game over)
+		&.bomb {
+		  background-color: var(--tile-bomb-color);
+		}
+
 		i {
 		  display: flex;
 		  font-size: calc(var(--font-size) * 1.5);

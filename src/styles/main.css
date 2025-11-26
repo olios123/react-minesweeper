@@ -227,6 +227,13 @@ button.new-game:hover {
   transition: 0.2s ease-in-out background-color;
   cursor: pointer;
 }
+#minesweeper .board .board-row .tile.revealed {
+  background-color: var(--tile-revealed-color);
+  cursor: default;
+}
+#minesweeper .board .board-row .tile.bomb {
+  background-color: var(--tile-bomb-color);
+}
 #minesweeper .board .board-row .tile i {
   display: flex;
   font-size: calc(var(--font-size) * 1.5);

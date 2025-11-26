@@ -12,9 +12,15 @@ interface TileProps {
 }
 
 export default function Tile({tileData, onClick, onContextMenu} : TileProps) {
-    
+    let className = "";
+    if (tileData.revealed && tileData.bomb) className = "bomb";
+    else if (tileData.revealed) className = "revealed";
+
     return (
-        <div className="tile"
+        <div className={
+            `tile 
+                ${className}
+            `}
              position-x={tileData.x}
              position-y={tileData.y}
              onClick={onClick} // Left click
