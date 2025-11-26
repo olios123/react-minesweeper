@@ -49,7 +49,7 @@ export class Board {
             for (let x = 0; x < this.size; x++) {
                 row[x] = <Tile
                     key={`${x}-${y}`}
-                    tileData={this.boardData[x][y]}
+                    tileData={this.boardData[y][x]}
                     onClick={() => this.handleTileClick(x, y, "left", setGameState)}
                     onContextMenu={() => this.handleTileClick(x, y, "right", setGameState)}
                 />;
@@ -105,9 +105,9 @@ export class Board {
             const y = Math.floor(Math.random() * this.size);
 
             // Mine already on this tile
-            if (this.boardData[x][y].bomb) continue;
+            if (this.boardData[y][x].bomb) continue;
 
-            this.boardData[x][y].bomb = true;
+            this.boardData[y][x].bomb = true;
 
             addedMines++;
         }
@@ -120,7 +120,7 @@ export class Board {
         for (const row of this.boardData) {
             for (const tile of row) {
                 if (tile.bomb) {
-                    console.log(tile.x, tile.y)
+                    console.log(tile, tile.x, tile.y)
                     tile.revealed = true;
                 }
             }
