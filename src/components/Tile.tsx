@@ -93,29 +93,18 @@
 interface TileProps {
     x: number,
     y: number,
-    onTileClick: (
-        x: number,
-        y: number,
-        mouseClick: "left" | "right"
-    ) => void
+    onClick: () => void,
+    onContextMenu: () => void
 }
 
-export default function Tile({x , y, onTileClick} : TileProps) {
-    
-    function tileClick() {
-        
-    }
+export default function Tile({x , y, onClick, onContextMenu} : TileProps) {
     
     return (
         <div className="tile"
              position-x={x}
              position-y={y}
-             onClick={() => {
-                 onTileClick(x, y, "left");
-             }}
-             onContextMenu={() => {
-                 onTileClick(x, y, "right");
-             }}
+             onClick={onClick} // Left click
+             onContextMenu={onContextMenu} // Right click
         >
             {/* There goes bomb or flag */}
         </div>

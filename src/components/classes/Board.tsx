@@ -51,8 +51,9 @@ export class Board {
                     key={keyEl++}
                     x={x}
                     y={y}
-                    onTileClick={(mouseClick) => console.log(mouseClick)}
-                    // TODO correct tile click handling
+                    onClick={() => this.handleTileClick(x, y, "left", setGameState)}
+                    onContextMenu={() => this.handleTileClick(x, y, "right", setGameState)}
+
                 />;
             }
             tiles[y] = <article key={keyRow++} className="board-row">{row}</article>;
@@ -72,16 +73,20 @@ export class Board {
         switch (mouseClick) {
             case "left":
                 if (clickedTile.flagged || clickedTile.revealed) return; // Can't reveal flagged or already revealed tile
-                if (clickedTile.bomb) {
+                if (clickedTile.bomb) { // Clicked on a mine
                     // Game over
                     setGameState("lost");
                     console.log("Game Over!");
                     return;
                 }
+
+                // Handle tile clicked
+
                 break;
             case "right":
                 if (clickedTile.revealed) return; // Can't flag revealed tile
 
+                // Toggle flagged state
                 clickedTile.flagged = !clickedTile.flagged;
                 console.log(clickedTile);
                 break;
