@@ -5,6 +5,7 @@ export class Board {
     size: number = 8;           // Size of the board (size x size)
     boardData: any[][] = [];    // Board data
     difficulty: number = 15;    // Percentage of mines
+    firstClick: any = null;     // First clicked tile
 
     // Data for user interface
     mines: number = 0;          // Number of mines on the board
@@ -33,8 +34,6 @@ export class Board {
                     bomb: false
                 })
             ));
-
-        this.generateMines();
     }
 
 
@@ -82,6 +81,7 @@ export class Board {
                 }
 
                 // Handle tile clicked
+                this.handleClick(x, y);
 
                 break;
             case "right":
@@ -89,15 +89,50 @@ export class Board {
 
                 // Toggle flagged state
                 clickedTile.flagged = !clickedTile.flagged;
-                console.log(clickedTile);
                 break;
         }
     }
 
+    private handleClick(x: number, y: number) {
+        // First click with excluding mine generation on clicked tile
+        if (!this.firstClick) {
+            this.generateMines(x, y);
+            this.firstClick = { x, y };
+        }
 
-    generateMines() {
+        // Count mines around clicked tile
+        const minesAround = this.countMinesAround(x, y);
+
+        console.log(minesAround);
+        //
+        // console.log(minesAround)
+        //
+        // if (this.firstClick && minesAround === 0) {
+        //     // Reveal adjacent tiles
+        // }
+    }
+    private countMinesAround(x: number, y: number) {
+        let count = 0;
+
+        if (x > 0 && this.boardData[x - 1][y].bomb) count++; // Top
+        if (x > 0 && y > 0 && this.boardData[x - 1][y - 1].bomb) count++; // Top-left
+        if (y > 0 && this.boardData[x][y - 1].bomb) count++; // Left
+        if (x < this.size - 1 && y > 0 && this.boardData[x + 1][y - 1].bomb) count++; // Bottom-left
+        if (x < this.size - 1 && this.boardData[x + 1][y].bomb) count++; // Bottom
+        if (x < this.size - 1 && y < this.size - 1 && this.boardData[x + 1][y + 1].bomb) count++; // Bottom-right
+        if (y < this.size - 1 && this.boardData[x][y + 1].bomb) count++; // Right
+        if (x > 0 && y < this.size - 1 && this.boardData[x - 1][y + 1].bomb) count++; // Top-right
+
+        return count;
+    }
+
+
+    // Generate mines excluding the first clicked tile
+    generateMines(
+        excludedX: number,
+        excludedY: number
+    ) {
         const numberOfMines = Math.round((this.size * this.size) * (this.difficulty / 100));
-
         let addedMines = 0; // Number of mines on board
 
         while (addedMines < numberOfMines) {
@@ -106,6 +141,8 @@ export class Board {
 
             // Mine already on this tile
             if (this.boardData[y][x].bomb) continue;
+            // Mine generated on excluded tile
+            if (x == excludedX && y == excludedY) continue;
 
             this.boardData[y][x].bomb = true;
 
@@ -120,7 +157,6 @@ export class Board {
         for (const row of this.boardData) {
             for (const tile of row) {
                 if (tile.bomb) {
-                    console.log(tile, tile.x, tile.y)
                     tile.revealed = true;
                 }
             }
